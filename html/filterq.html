@@ -1,0 +1,149 @@
+<?php
+session_start();
+$con= mysqli_connect('localhost','root');
+mysqli_select_db($con,'userregistration');
+?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>filter</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="style1.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/style1.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <h5>Price</h5><p id="price_show">0-300
+                    <div class="slidecontainer">
+  <input type="range" min="0" max="300" value="150" class="slider" id="myRange">
+  <p>Price: <span id="demo"></span></p>
+</div>
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
+                </div>
+                <div class="list-group">
+                    <h5>Language</h5>
+                    <?php
+                    $query = "SELECT DISTINCT(language) FROM books WHERE stock = '1' ORDER BY language DESC";
+                    $result = mysqli_query($con,$query);
+                    $events=mysqli_fetch_array($result);
+                    $num = mysqli_num_rows($result) ;
+                    foreach($result as $row)
+                    {
+                    ?>
+                        <div class="list-group-item checkbox">
+                            <label>
+                                <input type="checkbox" class="filter_all language" value="<?php echo $row['language']; ?>">
+                                <?php echo $row['language']; ?>
+                            </label>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+                <div class="list-group">
+                    <h5>Category</h5>
+                         <?php
+                    $query = "SELECT DISTINCT(category) FROM books WHERE stock = '1' ORDER BY category DESC";
+                    $result = mysqli_query($con,$query);
+                    $events=mysqli_fetch_array($result);
+                    $num = mysqli_num_rows($result) ;
+                    foreach($result as $row)
+                    {
+                    ?>
+                            <div class="list-group-item checkbox">
+                                <label>
+                                    <input type="checkbox" class="filter_all category" value="<?php echo $row['category']; ?>">
+                                    <?php echo $row['category']; ?>
+                                </label>
+                            </div>
+                            <?php
+                    }
+                    ?>
+                 </div>
+                <div class="list-group">
+                    <h5>Arrivals</h5>
+                    <?php
+                    $query = "SELECT DISTINCT(arrival) FROM books WHERE stock = '1' ORDER BY arrival DESC";
+                    $result = mysqli_query($con,$query);
+                    $events=mysqli_fetch_array($result);
+                    $num = mysqli_num_rows($result) ;
+                    foreach($result as $row)
+                    {
+                    ?>
+                        <div class="list-group-item checkbox">
+                            <label>
+                                <input type="checkbox" class="filter_all arrival" value="<?php echo $row['arrival']; ?>">
+                                <?php echo $row['arrival']; ?>
+                            </label>
+                        </div>
+                        <?php    
+                    }
+                    ?>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row filter_data">
+                 </div>
+            </div>
+        </div> 
+    </div> 
+    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script> 
+    <script src="js/jquery-ui.js"></script> 
+    <script>
+        $(document).ready(function() { 
+            filter_data(); 
+            function filter_data() {
+                $('.filter_data');
+                var action = 'fetch_data';
+                var language = get_filter('language');
+                var category = get_filter('category');
+                var arrival = get_filter('arrival');
+                $.ajax({
+                    url: "apply.php",
+                    method: "POST",
+                    data: {
+                        action: action,
+                        language: language,
+                        category: category,
+                        arrival: arrival,
+                    }
+                    success: function(data) {
+                        $('#filter_data').html(data);
+                    }
+                });
+            }
+            function get_filter(class_name) {
+                var filter = [];
+                $('.' + class_name + ':checked').each(function() {
+                    filter.push($(this).val());
+                });
+                return filter;
+            }
+            $('.filter_all').click(function() {
+                filter_data();
+            });  
+        });
+    </script>
+</body>
+</html>

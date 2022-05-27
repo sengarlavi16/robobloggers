@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Signin page</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+   <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="signin-box">
+    <h1 style="margin-bottom: 20px;"><b>Sign In</b></h1>
+    <div class="form-group row">
+ <form action="reg.php" method="post"> 
+    <label>Your Name</label>
+   <input type="text" name="name" required title="Only Alphabet" style="margin-left: 50px; width: 250px;">
+    <br>
+     <label>Mobile No.</label>
+    <input type="Text" name="number" required pattern="[0-9]{10}" title="Only Numeric" style="margin-left: 51px; width: 250px;">
+    <br>
+
+    <label>Email</label>
+    <input type="text" name="email" required style="margin-left: 92px; width: 250px;">
+    <br>
+
+    <label>Password</label>
+    <input type="password" name="psw" required style="margin-left: 63px; width: 250px;">
+    <br>
+
+    <label>Repeat Password</label>
+    <input type="password" name="psw-repeat" required style="margin-left: 9px; width: 250px;">
+    <br>
+    
+    <label>
+      <input type="checkbox" checked="checked" name="remember" style="margin-top:15px;"> Remember me
+    </label>
+
+    <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+      <div class="clearfix">
+      <button type="cancel" class="btn btn-dark">Cancel</button>
+      <button type="submit" name="submit" class="btn btn-dark">Sign Up</button>
+    </div>
+  </form>
+    </div>
+    </div>
+  </div>
+<h6>Already a Member?<a href="login.html"> Log In</a></h6>
+</body>
+</html>
